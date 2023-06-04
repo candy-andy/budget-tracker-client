@@ -1,1 +1,29 @@
-/* You can add global styles to this file, and also import other style files */
+@import url("./reset.css");
+
+@font-face {
+  font-family: "Poppins-Regular";
+  src: url("./assets/fonts/Poppins-Regular.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Poppins-SemiBold";
+  src: url("./assets/fonts/Poppins-SemiBold.woff2") format("woff2");
+}
+
+html {
+  font-family: "Poppins-Regular";
+  font-size: 10px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Poppins-SemiBold";
+}
+
+h1 {
+  font-size: 3rem;
+}
