@@ -1,9 +1,9 @@
 # Budget Tracker
 
----
-
 #### Client-side code repository
-*Technologies*:
+
+_Technologies_:
+
 - Angular
 - TypeScript
 - HTML

@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 
+import { RegistrationService, UserRegistration } from './registration.service';
+
 @Component({
   selector: 'app-registration',
   templateUrl: './registration.component.html',
@@ -13,9 +15,19 @@ export class RegistrationComponent {
     confirmPassword: '',
   });
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private registrationService: RegistrationService
+  ) {}
 
+  // TODO: add form validation
   onSubmit() {
-    console.log(this.registrationForm.value);
+    const { email, password } = this.registrationForm.value;
+
+    if (email && password) {
+      this.registrationService
+        .register({ email, password })
+        .subscribe((data: UserRegistration) => console.log(data));
+    }
   }
 }
