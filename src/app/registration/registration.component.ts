@@ -1,7 +1,25 @@
 import { Component } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  ValidationErrors,
+  ValidatorFn,
+  Validators,
+} from '@angular/forms';
 
 import { RegistrationService, UserRegistration } from './registration.service';
+
+const passwordsMatchValidator: ValidatorFn = (
+  control: AbstractControl
+): ValidationErrors | null => {
+  const password = control.get('password');
+  const confirmPassword = control.get('confirmPassword');
+
+  const isPasswordsMatch =
+    password && confirmPassword && password.value === confirmPassword.value;
+
+  return isPasswordsMatch ? null : { passwordsDontMatch: true };
+};
 
 @Component({
   selector: 'app-registration',
@@ -9,18 +27,32 @@ import { RegistrationService, UserRegistration } from './registration.service';
   styleUrls: ['./registration.component.css'],
 })
 export class RegistrationComponent {
-  registrationForm = this.formBuilder.group({
-    email: '',
-    password: '',
-    confirmPassword: '',
-  });
+  registrationForm = this.formBuilder.group(
+    {
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(8)]],
+      confirmPassword: ['', [Validators.required]],
+    },
+    { validators: passwordsMatchValidator }
+  );
 
   constructor(
     private formBuilder: FormBuilder,
     private registrationService: RegistrationService
   ) {}
 
-  // TODO: add form validation
+  get email() {
+    return this.registrationForm.get('email')!;
+  }
+
+  get password() {
+    return this.registrationForm.get('password')!;
+  }
+
+  get confirmPassword() {
+    return this.registrationForm.get('confirmPassword')!;
+  }
+
   onSubmit() {
     const { email, password } = this.registrationForm.value;
 
