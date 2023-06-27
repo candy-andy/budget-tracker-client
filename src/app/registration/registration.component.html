@@ -1,16 +1,17 @@
 <div class="container">
-  <h1 class="title">Registration</h1>
+  <h1>Registration</h1>
 
-  <!-- TODO: add styles for validation fail messages -->
   <form class="form" [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
     <div class="formItem">
       <label for="email">Email</label>
       <input id="email" formControlName="email" type="email" required />
-    </div>
-
-    <div *ngIf="email.invalid && (email.dirty || email.touched)">
-      <div *ngIf="email.errors?.['required']">Email is required</div>
-      <div *ngIf="email.errors?.['email']">Not email</div>
+      <div
+        class="error"
+        *ngIf="email.invalid && (email.dirty || email.touched)"
+      >
+        <div *ngIf="email.errors?.['required']">Email is required</div>
+        <div *ngIf="email.errors?.['email']">Not email</div>
+      </div>
     </div>
 
     <div class="formItem">
@@ -21,11 +22,13 @@
         type="password"
         required
       />
-    </div>
-
-    <div *ngIf="password.invalid && (password.dirty || password.touched)">
-      <div *ngIf="password.errors?.['required']">Password is required</div>
-      <div *ngIf="password.errors?.['minlength']">Too short</div>
+      <div
+        class="error"
+        *ngIf="password.invalid && (password.dirty || password.touched)"
+      >
+        <div *ngIf="password.errors?.['required']">Password is required</div>
+        <div *ngIf="password.errors?.['minlength']">Too short</div>
+      </div>
     </div>
 
     <div class="formItem">
@@ -36,23 +39,23 @@
         type="password"
         required
       />
-    </div>
-
-    <div
-      *ngIf="
-        (confirmPassword.invalid || registrationForm.errors?.['passwordsDontMatch']) &&
-        (confirmPassword.dirty || confirmPassword.touched)
-      "
-    >
-      <div *ngIf="confirmPassword.errors?.['required']">
+      <div
+        class="error"
+        *ngIf="confirmPassword.errors?.['required'] && (confirmPassword.dirty || confirmPassword.touched)"
+      >
         Password confirmation is required
       </div>
-      <div *ngIf="registrationForm.errors?.['passwordsDontMatch']">
+      <div
+        class="error"
+        *ngIf="registrationForm.errors?.['passwordsDontMatch'] && !confirmPassword.errors?.['required']"
+      >
         Passwords don't match
       </div>
     </div>
 
-    <button class="button" type="submit">Register</button>
+    <button class="button" [disabled]="registrationForm.invalid" type="submit">
+      Register
+    </button>
   </form>
 
   <div>
