@@ -1,0 +1,34 @@
+/* TODO: reuse styles for registration and login pages */
+
+.button {
+  width: 10rem;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 2rem;
+}
+
+.error {
+  color: red;
+  text-align: right;
+  margin-top: 0.3rem;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  margin: 3rem 0;
+}
+
+.formItem {
+  display: flex;
+  flex-direction: column;
+  height: 4.5rem;
+  width: 20rem;
+}
