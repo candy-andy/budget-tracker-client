@@ -4,7 +4,13 @@
   <form class="form" [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
     <div class="formItem">
       <label for="email">Email</label>
-      <input id="email" formControlName="email" type="email" required />
+      <input
+        autocomplete="off"
+        id="email"
+        formControlName="email"
+        type="email"
+        required
+      />
       <div
         class="error"
         *ngIf="email.invalid && (email.dirty || email.touched)"
@@ -12,6 +18,7 @@
         <div *ngIf="email.errors?.['required']">Email is required</div>
         <div *ngIf="email.errors?.['email']">Not email</div>
       </div>
+      <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>
     </div>
 
     <div class="formItem">
@@ -53,7 +60,11 @@
       </div>
     </div>
 
-    <button class="button" [disabled]="registrationForm.invalid" type="submit">
+    <button
+      class="button"
+      [disabled]="registrationForm.invalid || errorMessage"
+      type="submit"
+    >
       Register
     </button>
   </form>

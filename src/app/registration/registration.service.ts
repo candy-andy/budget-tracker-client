@@ -1,10 +1,14 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Observable, catchError, throwError } from 'rxjs';
 
 export interface UserRegistration {
   email: string;
   password: string;
+}
+
+export interface UserRegistrationResponse {
+  email: string;
 }
 
 @Injectable({
@@ -16,8 +20,26 @@ export class RegistrationService {
 
   constructor(private httpClient: HttpClient) {}
 
-  // TODO: add User type
-  register(user: UserRegistration): Observable<UserRegistration> {
-    return this.httpClient.post<UserRegistration>(this.registrationUrl, user);
+  register(user: UserRegistration): Observable<UserRegistrationResponse> {
+    return this.httpClient
+      .post<UserRegistration>(this.registrationUrl, user)
+      .pipe(catchError(this.handleError));
+  }
+
+  private handleError(error: HttpErrorResponse) {
+    let errorMessage: string;
+
+    switch (error.status) {
+      case 0:
+        errorMessage = 'Network error';
+        break;
+      case 409:
+        errorMessage = 'Email already exists';
+        break;
+      default:
+        errorMessage = 'Something went wrong';
+    }
+
+    return throwError(() => errorMessage);
   }
 }
