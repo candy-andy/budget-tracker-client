@@ -2,27 +2,20 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, catchError, throwError } from 'rxjs';
 
-export interface UserRegistration {
-  email: string;
-  password: string;
-}
-
-export interface UserRegistrationResponse {
-  email: string;
-}
+import { UserRegistration, UserRegistrationResponse } from '../types';
 
 @Injectable({
   providedIn: 'root',
 })
 export class RegistrationService {
   // TODO: extract to .env
-  private registrationUrl = 'http://localhost:8080/api/user/register';
+  private readonly REGISTRATION_URL = 'http://localhost:8080/api/user/register';
 
   constructor(private httpClient: HttpClient) {}
 
   register(user: UserRegistration): Observable<UserRegistrationResponse> {
     return this.httpClient
-      .post<UserRegistration>(this.registrationUrl, user)
+      .post<UserRegistration>(this.REGISTRATION_URL, user)
       .pipe(catchError(this.handleError));
   }
 

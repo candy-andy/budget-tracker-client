@@ -4,13 +4,22 @@
   <form class="form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
     <div class="formItem">
       <label for="email">Email</label>
-      <input id="email" formControlName="email" type="email" required="" />
+      <input
+        autocomplete="off"
+        id="email"
+        formControlName="email"
+        type="email"
+        required=""
+      />
       <div
         class="error"
         *ngIf="email.invalid && (email.dirty || email.touched)"
       >
         <div *ngIf="email.errors?.['required']">Email required</div>
         <div *ngIf="email.errors?.['email']">Not email</div>
+      </div>
+      <div class="error" *ngIf="error?.field === 'email'">
+        {{ error?.errorMessage }}
       </div>
     </div>
 
@@ -27,11 +36,17 @@
         *ngIf="password.invalid && (password.dirty || password.touched)"
       >
         <div *ngIf="password.errors?.['required']">Password required</div>
-        <div *ngIf="password.errors?.['minlength']">Too short</div>
+      </div>
+      <div class="error" *ngIf="error?.field === 'password'">
+        {{ error?.errorMessage }}
       </div>
     </div>
 
-    <button class="button" [disabled]="loginForm.invalid" type="submit">
+    <button
+      class="button"
+      [disabled]="loginForm.invalid || error"
+      type="submit"
+    >
       Login
     </button>
   </form>

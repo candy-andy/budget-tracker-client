@@ -7,10 +7,8 @@ import {
   Validators,
 } from '@angular/forms';
 
-import {
-  RegistrationService,
-  UserRegistrationResponse,
-} from './registration.service';
+import { RegistrationService } from './registration.service';
+import { UserRegistrationResponse } from '../types';
 
 const passwordsMatchValidator: ValidatorFn = (
   control: AbstractControl
@@ -30,7 +28,7 @@ const passwordsMatchValidator: ValidatorFn = (
   styleUrls: ['./registration.component.css'],
 })
 export class RegistrationComponent {
-  errorMessage: string | null = null;
+  private _errorMessage = '';
   registrationForm = this.formBuilder.group(
     {
       email: ['', [Validators.required, Validators.email]],
@@ -45,7 +43,7 @@ export class RegistrationComponent {
     private registrationService: RegistrationService
   ) {
     this.registrationForm.controls['email'].valueChanges.subscribe(() => {
-      if (this.errorMessage) this.errorMessage = null;
+      if (this.errorMessage) this.errorMessage = '';
     });
   }
 
@@ -61,13 +59,23 @@ export class RegistrationComponent {
     return this.registrationForm.get('confirmPassword')!;
   }
 
+  get errorMessage() {
+    return this._errorMessage!;
+  }
+
+  set errorMessage(errorMessage: string) {
+    this._errorMessage = errorMessage;
+  }
+
   onSubmit() {
     const { email, password } = this.registrationForm.value;
 
     if (email && password) {
       this.registrationService.register({ email, password }).subscribe({
         next: (data: UserRegistrationResponse) => console.log(data.email),
-        error: (error) => (this.errorMessage = error),
+        error: (error) => {
+          this.errorMessage = error;
+        },
         complete: () => console.log('Completed'), // TODO: navigate to dashboard
       });
     }
